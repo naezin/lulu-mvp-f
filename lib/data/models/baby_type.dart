@@ -1,0 +1,105 @@
+/// 아기 출생 유형
+enum BabyType {
+  singleton('singleton', '단태아'),
+  twin('twin', '쌍둥이'),
+  triplet('triplet', '세쌍둥이'),
+  quadruplet('quadruplet', '네쌍둥이');
+
+  const BabyType(this.value, this.label);
+
+  final String value;
+  final String label;
+
+  static BabyType fromValue(String value) {
+    return BabyType.values.firstWhere(
+      (type) => type.value == value,
+      orElse: () => BabyType.singleton,
+    );
+  }
+
+  static BabyType fromBabyCount(int count) {
+    return switch (count) {
+      1 => BabyType.singleton,
+      2 => BabyType.twin,
+      3 => BabyType.triplet,
+      _ => BabyType.quadruplet,
+    };
+  }
+
+  int get maxBabies => switch (this) {
+        BabyType.singleton => 1,
+        BabyType.twin => 2,
+        BabyType.triplet => 3,
+        BabyType.quadruplet => 4,
+      };
+}
+
+/// 동일란/이란 구분
+enum Zygosity {
+  identical('identical', '일란성'),
+  fraternal('fraternal', '이란성'),
+  unknown('unknown', '모름');
+
+  const Zygosity(this.value, this.label);
+
+  final String value;
+  final String label;
+
+  static Zygosity fromValue(String value) {
+    return Zygosity.values.firstWhere(
+      (z) => z.value == value,
+      orElse: () => Zygosity.unknown,
+    );
+  }
+}
+
+/// 성장 차트 유형
+enum GrowthChartType {
+  fenton('fenton', 'Fenton'),
+  who('who', 'WHO');
+
+  const GrowthChartType(this.value, this.label);
+
+  final String value;
+  final String label;
+}
+
+/// 성별
+enum Gender {
+  male('male', '남아'),
+  female('female', '여아'),
+  unknown('unknown', '미정');
+
+  const Gender(this.value, this.label);
+
+  final String value;
+  final String label;
+
+  static Gender fromValue(String value) {
+    return Gender.values.firstWhere(
+      (g) => g.value == value,
+      orElse: () => Gender.unknown,
+    );
+  }
+}
+
+/// 활동 유형
+enum ActivityType {
+  sleep('sleep', '수면'),
+  feeding('feeding', '수유'),
+  diaper('diaper', '기저귀'),
+  play('play', '놀이'),
+  health('health', '건강');
+
+  const ActivityType(this.value, this.label);
+
+  final String value;
+  final String label;
+
+  static ActivityType fromValue(String value) {
+    return ActivityType.values.firstWhere(
+      (t) => t.value == value,
+      orElse: () => ActivityType.sleep,
+    );
+  }
+}

@@ -1,0 +1,204 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../core/theme/app_theme.dart';
+import '../providers/onboarding_provider.dart';
+
+/// Step 5 (다태아 전용): 동시 기록 팁 안내
+/// "둘 다" 버튼 설명
+class MultipleBirthTipScreen extends StatelessWidget {
+  const MultipleBirthTipScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<OnboardingProvider>();
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        children: [
+          const SizedBox(height: 48),
+
+          // 제목
+          Text(
+            '다둥이 기록 팁',
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  color: AppTheme.textPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+
+          const SizedBox(height: 12),
+
+          Text(
+            '더 쉽게 기록할 수 있어요',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: AppTheme.textSecondary,
+                ),
+          ),
+
+          const SizedBox(height: 48),
+
+          // 팁 1: 둘 다 버튼
+          _TipCard(
+            icon: Icons.groups_rounded,
+            title: '"둘 다" 버튼',
+            description: '여러 아기가 같은 활동을 했다면\n한 번에 기록할 수 있어요',
+            color: AppTheme.lavenderMist,
+          ),
+
+          const SizedBox(height: 16),
+
+          // 팁 2: 탭으로 전환
+          _TipCard(
+            icon: Icons.swap_horiz_rounded,
+            title: '탭으로 빠른 전환',
+            description: '상단 탭을 눌러 아기별 기록을\n빠르게 확인하고 전환해요',
+            color: AppTheme.babyAvatarColors[0],
+          ),
+
+          const SizedBox(height: 16),
+
+          // 팁 3: 색상으로 구분
+          _TipCard(
+            icon: Icons.palette_rounded,
+            title: '색상으로 구분',
+            description: '각 아기만의 색상으로\n한눈에 구분할 수 있어요',
+            color: AppTheme.babyAvatarColors[1],
+            showBabyColors: true,
+            babyCount: provider.babyCount,
+          ),
+
+          const Spacer(),
+
+          // 다음 버튼
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () => provider.nextStep(),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 18),
+                backgroundColor: AppTheme.lavenderMist,
+                foregroundColor: AppTheme.midnightNavy,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              child: const Text(
+                '알겠어요',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 48),
+        ],
+      ),
+    );
+  }
+}
+
+class _TipCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+  final Color color;
+  final bool showBabyColors;
+  final int babyCount;
+
+  const _TipCard({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.color,
+    this.showBabyColors = false,
+    this.babyCount = 1,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceCard,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppTheme.textPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppTheme.textSecondary,
+                        height: 1.4,
+                      ),
+                ),
+                if (showBabyColors) ...[
+                  const SizedBox(height: 12),
+                  Row(
+                    children: List.generate(babyCount, (index) {
+                      final colors = [
+                        AppTheme.babyAvatarColors[0],
+                        AppTheme.babyAvatarColors[1],
+                        AppTheme.babyAvatarColors[2],
+                        AppTheme.babyAvatarColors[3],
+                      ];
+                      return Container(
+                        width: 24,
+                        height: 24,
+                        margin: const EdgeInsets.only(right: 8),
+                        decoration: BoxDecoration(
+                          color: colors[index],
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            '${index + 1}',
+                            style: const TextStyle(
+                              color: AppTheme.midnightNavy,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
