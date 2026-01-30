@@ -2,13 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../data/models/models.dart';
-import '../../../data/repositories/activity_repository.dart';
+import '../../../core/services/local_activity_service.dart';
 
 /// 기록 화면 상태 관리 Provider
 ///
 /// MVP-F: 단일 아기 선택만 지원 (동시 기록 제거)
+/// MVP-F: 로컬 저장 모드 (Supabase 인증 없이 동작)
 class RecordProvider extends ChangeNotifier {
-  final ActivityRepository _activityRepository = ActivityRepository();
+  final LocalActivityService _localActivityService = LocalActivityService.instance;
   final Uuid _uuid = const Uuid();
 
   // ========================================
@@ -327,7 +328,7 @@ class RecordProvider extends ChangeNotifier {
         createdAt: DateTime.now(),
       );
 
-      final savedActivity = await _activityRepository.createActivity(activity);
+      final savedActivity = await _localActivityService.saveActivity(activity);
 
       debugPrint('✅ [RecordProvider] Feeding saved: ${savedActivity.id}');
       return savedActivity;
@@ -400,7 +401,7 @@ class RecordProvider extends ChangeNotifier {
         createdAt: DateTime.now(),
       );
 
-      final savedActivity = await _activityRepository.createActivity(activity);
+      final savedActivity = await _localActivityService.saveActivity(activity);
 
       debugPrint('✅ [RecordProvider] Sleep saved: ${savedActivity.id}');
       return savedActivity;
@@ -491,7 +492,7 @@ class RecordProvider extends ChangeNotifier {
         createdAt: DateTime.now(),
       );
 
-      final savedActivity = await _activityRepository.createActivity(activity);
+      final savedActivity = await _localActivityService.saveActivity(activity);
 
       debugPrint('✅ [RecordProvider] Play saved: ${savedActivity.id}');
       return savedActivity;
@@ -602,7 +603,7 @@ class RecordProvider extends ChangeNotifier {
         createdAt: DateTime.now(),
       );
 
-      final savedActivity = await _activityRepository.createActivity(activity);
+      final savedActivity = await _localActivityService.saveActivity(activity);
 
       debugPrint('✅ [RecordProvider] Health saved: ${savedActivity.id}');
       return savedActivity;
@@ -656,7 +657,7 @@ class RecordProvider extends ChangeNotifier {
         createdAt: DateTime.now(),
       );
 
-      final savedActivity = await _activityRepository.createActivity(activity);
+      final savedActivity = await _localActivityService.saveActivity(activity);
 
       debugPrint('✅ [RecordProvider] Diaper saved: ${savedActivity.id}');
       return savedActivity;
