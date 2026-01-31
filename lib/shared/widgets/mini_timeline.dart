@@ -179,6 +179,17 @@ class _TimelineItem extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
+                // BUG-003: 메모 표시 추가
+                if (activity.notes != null && activity.notes!.isNotEmpty)
+                  Text(
+                    '📝 ${activity.notes}',
+                    style: LuluTextStyles.caption.copyWith(
+                      color: LuluTextColors.tertiary,
+                      fontStyle: FontStyle.italic,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
               ],
             ),
           ),

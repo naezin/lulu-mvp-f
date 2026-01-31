@@ -317,6 +317,31 @@ class _TimelineScreenState extends State<TimelineScreen> {
                     color: LuluTextColors.secondary,
                   ),
                 ),
+                // BUG-003: 메모 표시 추가
+                if (activity.notes != null && activity.notes!.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.notes_rounded,
+                        size: 12,
+                        color: LuluTextColors.tertiary,
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          activity.notes!,
+                          style: LuluTextStyles.caption.copyWith(
+                            color: LuluTextColors.tertiary,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ],
             ),
           ),
